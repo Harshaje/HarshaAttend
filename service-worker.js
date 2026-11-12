@@ -1,6 +1,5 @@
 
-const CACHE_NAME = 'harsha-attendance-v4';
-
+const CACHE_NAME = 'harsha-attendance-v5';
 const APP_FILES = [
   './',
   './index.html',
@@ -8,8 +7,8 @@ const APP_FILES = [
   './app.js',
   './manifest.webmanifest',
   './icon-192.png',
-  './icon-512.png'
-  './jsQR.js'
+  './icon-512.png',
+  './html5-qrcode.min.js'
 ];
 
 self.addEventListener('install', (event) => {

@@ -9,6 +9,7 @@ const APP_FILES = [
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png'
+  './jsQR.js'
 ];
 
 self.addEventListener('install', (event) => {

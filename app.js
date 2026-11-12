@@ -128,11 +128,46 @@ function closeAttendanceSession(){
 function downloadSessionQR(){alert("A subject QR is not required. Each student has one permanent personal QR.");}
 function shareSessionQR(){alert("A subject QR is not required. Each student has one permanent personal QR.");}
 
-async function startScanner(){
-  if(scanner)return;if(!activeSession)return alert("Please select a subject and start attendance first.");
-  scanner=new Html5Qrcode("reader");
-  try{await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:250,height:250}},text=>markAttendance(text),()=>{})}
-  catch(e){console.error(e);document.getElementById("scanMsg").textContent="Camera could not start. Use HTTPS/GitHub Pages and allow camera permission.";scanner=null}
+async function startScanner() {
+  if (scanner) return;
+
+  if (!activeSession) {
+    return alert("Please select a subject first.");
+  }
+
+  if (!window.isSecureContext) {
+    return alert("Camera requires HTTPS.");
+  }
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    return alert("Camera is not supported by this browser.");
+  }
+
+  if (typeof Html5Qrcode === "undefined") {
+    return alert("QR scanner library is not available offline.");
+  }
+
+  scanner = new Html5Qrcode("reader");
+
+  try {
+    await scanner.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: { width: 250, height: 250 }
+      },
+      text => markAttendance(text),
+      () => {}
+    );
+
+  } catch (error) {
+    console.error("Camera error:", error);
+
+    document.getElementById("scanMsg").textContent =
+      "Camera error: " + error.message;
+
+    scanner = null;
+  }
 }
 async function stopScanner(){if(!scanner)return;try{await scanner.stop()}catch(e){}scanner=null}
 
